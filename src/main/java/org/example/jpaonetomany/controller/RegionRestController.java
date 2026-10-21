@@ -1,5 +1,6 @@
 package org.example.jpaonetomany.controller;
 
+import org.example.jpaonetomany.exception.ResourceNotFoundException;
 import org.example.jpaonetomany.model.Region;
 import org.example.jpaonetomany.repository.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,12 @@ public class RegionRestController {
     @PostMapping("/region2")
     public ResponseEntity<String> postRegion2(@RequestParam String kode, @RequestParam String navn) {
         return ResponseEntity.ok("Received kode: " + kode + ", navn: " + navn);
+    }
+
+    @GetMapping("/name/{name}")
+    public Region getRegionByName(@PathVariable String name) {
+        return regionRepository.findByNavn(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Region ikke fundet med navn: " + name));
     }
 
 
